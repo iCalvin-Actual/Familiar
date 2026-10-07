@@ -21,7 +21,17 @@ public enum FontRegistry {
 
     private static let logger = Logger(subsystem: "Familiar", category: "FontRegistry")
 
-    // icc-fontregistry
+    /// Registers every font file in `bundle` and returns the PostScript names
+    /// it contributed. Safe to call repeatedly; only the first call does work.
+    @discardableResult
+    public static func register(_ bundle: Bundle) -> Set<String> {
+        registered.withLock { cache in
+            if let names = cache[bundle] { return names }
+            let names = registerFonts(in: bundle)
+            cache[bundle] = names
+            return names
+        }
+    }
 
     /// Whether Core Text resolves `postScriptName` to that exact font.
     public static func isAvailable(_ postScriptName: String) -> Bool {

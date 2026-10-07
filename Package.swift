@@ -21,6 +21,8 @@ let package = Package(
             name: "Familiar",
             resources: [
                 // Declaring resources is what creates `Bundle.module`.
+                // Also ships Licenses/FFL.txt, which has to travel with the fonts.
+                .process("Resources/Fonts"),
                 // Colors.xcassets. See `Swatch.catalog`.
                 .process("Resources/Colors"),
             ],
