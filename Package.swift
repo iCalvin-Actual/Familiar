@@ -23,6 +23,9 @@ let package = Package(
                 // Declaring resources is what creates `Bundle.module`.
                 // Also ships Licenses/FFL.txt, which has to travel with the fonts.
                 .process("Resources/Fonts"),
+                // Images.xcassets, plus loose image files flattened into the
+                // bundle root. See `Icon.Symbol` and `URL.familiarImages`.
+                .process("Resources/Images"),
                 // Colors.xcassets. See `Swatch.catalog`.
                 .process("Resources/Colors"),
             ],
