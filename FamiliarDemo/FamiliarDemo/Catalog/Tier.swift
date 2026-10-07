@@ -18,7 +18,7 @@ enum Tier: String, CaseIterable, Identifiable {
         switch self {
         case .atoms:        [.icon, .label, .artwork, .loadingIndicator]
         case .molecules:    [.button, .chip, .rating, .sectionHeader, .labeledImage]
-        case .organisms:    [.card]
+        case .organisms:    [.card, .chipRow]
         }
     }
 }

@@ -11,4 +11,10 @@ struct SectionHeaderTests {
         #expect(header.subtitle == nil)
         #expect(header.action == nil)
     }
+
+    @Test func chipRowDefaultsToNoHeader() {
+        let row = ChipRow(chips: [Familiar.Chip("Tea")])
+        #expect(row.header == nil)
+        #expect(row.inset == 24)
+    }
 }

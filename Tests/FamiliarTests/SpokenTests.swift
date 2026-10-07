@@ -26,4 +26,11 @@ struct SpokenTests {
         #expect(Icon(source: .file("nextapp")).spoken == nil)
     }
 
+    @Test func chipRowsReadAsOne() {
+        let row = ChipRow(header: SectionHeader("Drinks"), chips: [
+            Familiar.Chip("Coffee", behavior: .button {}),
+            Familiar.Chip("Tea", isSelected: true, behavior: .button {}),
+        ])
+        #expect(row.spoken == Spoken("Drinks", value: "Tea selected", actions: ["Coffee", "Tea"]))
+    }
 }

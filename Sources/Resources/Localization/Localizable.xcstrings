@@ -18,6 +18,40 @@
         }
       }
     },
+    "%@ selected": {
+      "comment": "VoiceOver value for a chip row, e.g. “Tea and Juice selected”.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionado: %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgewählt: %@"
+          }
+        }
+      }
+    },
+    "Filters": {
+      "comment": "VoiceOver label for a row of chips with no header.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtros"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filter"
+          }
+        }
+      }
+    },
     "Loading": {
       "comment": "VoiceOver value for Artwork while its image downloads.",
       "localizations": {
@@ -31,6 +65,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wird geladen"
+          }
+        }
+      }
+    },
+    "Nothing selected": {
+      "comment": "VoiceOver value for a chip row with no chip selected.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada seleccionado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts ausgewählt"
           }
         }
       }

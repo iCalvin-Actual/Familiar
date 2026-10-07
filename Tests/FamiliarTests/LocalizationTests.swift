@@ -22,6 +22,14 @@ struct LocalizationTests {
         #expect(String(format: try localized("%@ out of %lld stars", in: expected.0), "4.9", 5) == expected.1)
     }
 
+    @Test(arguments: [("es", "Filtros", "Nada seleccionado", "Seleccionado: Té"), ("de", "Filter", "Nichts ausgewählt", "Ausgewählt: Tee")])
+    func chipRowIsTranslated(_ expected: (String, String, String, String)) throws {
+        #expect(try localized("Filters", in: expected.0) == expected.1)
+        #expect(try localized("Nothing selected", in: expected.0) == expected.2)
+        let tea = expected.0 == "es" ? "Té" : "Tee"
+        #expect(String(format: try localized("%@ selected", in: expected.0), tea) == expected.3)
+    }
+
     @Test(arguments: [("es", "Logotipo"), ("de", "Wortmarke")])
     func wordmarkIsTranslated(_ expected: (String, String)) throws {
         #expect(try localized("Wordmark", in: expected.0) == expected.1)
