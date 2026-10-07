@@ -108,9 +108,11 @@ public extension Button {
             role == .destructive ? .critical : accent
         }
 
-        static func opacity(isEnabled: Bool, isPressed: Bool) -> Double {
+        /// Plain buttons have no surface to change, so hover dims the label instead.
+        static func opacity(isEnabled: Bool, isPressed: Bool, isHovered: Bool) -> Double {
             guard isEnabled else { return 0.4 }
-            return isPressed ? 0.7 : 1
+            if isPressed { return 0.7 }
+            return isHovered ? 0.8 : 1
         }
     }
 }
@@ -121,6 +123,9 @@ private struct Chrome: View {
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.colorSchemeContrast) private var contrast
+    @Environment(\.forcedInteraction) private var forcedInteraction
+    @Environment(\.isFocused) private var isFocused
+    @State private var isHovering = false
 
     let configuration: ButtonStyleConfiguration
     let prominence: Button.Prominence
@@ -139,8 +144,13 @@ private struct Chrome: View {
         default:             nil
         }
         let isGlass = glassTint != nil
-        // Interactive glass has its own press response.
-        let isPressed = configuration.isPressed && !isGlass
+        let state = Interaction.resolve(
+            forced: forcedInteraction,
+            live: .init(isHovered: isHovering, isPressed: configuration.isPressed, isFocused: isFocused)
+        )
+        // Interactive glass has its own hover and press response.
+        let isPressed = state.isPressed && !isGlass
+        let isHovered = state.isHovered && !isGlass && isEnabled
 
         let content = configuration.label
             .frame(maxWidth: width == .fill ? .infinity : nil)
@@ -150,11 +160,12 @@ private struct Chrome: View {
             .background {
                 switch prominence {
                 case .matte:
-                    shape.fill(.swatch(swatch))
+                    shape.fill(.swatch(swatch)).opacity(isHovered ? 0.85 : 1)
                 case .tinted:
-                    shape.fill(.swatch(swatch)).opacity(0.15)
+                    shape.fill(.swatch(swatch)).opacity(isHovered ? 0.25 : 0.15)
                 case .outlined:
-                    shape.strokeBorder(.swatch(swatch), lineWidth: 1.5)
+                    shape.fill(.swatch(swatch)).opacity(isHovered ? 0.1 : 0)
+                        .overlay(shape.strokeBorder(.swatch(swatch), lineWidth: 1.5))
                 case .glass, .plain:
                     EmptyView()
                 }
@@ -167,12 +178,19 @@ private struct Chrome: View {
                 content
             }
         }
-        .opacity(Button.Style.opacity(isEnabled: isEnabled, isPressed: isPressed))
+        // Plain has no padding of its own, so its ring needs more room.
+        .focusRing(shape, isFocused: state.isFocused && isEnabled, swatch: swatch, gap: prominence == .plain ? pointSize * 0.4 : 3)
+        .opacity(Button.Style.opacity(isEnabled: isEnabled, isPressed: isPressed, isHovered: isHovered && prominence == .plain))
         .scaleEffect(isPressed ? 0.97 : 1)
+        .minimumTapTarget()
+        // Outside the tap-target frame, which would otherwise take only the
+        // space it's offered and centre a wider label inside it.
         .fixedSize(horizontal: width == .intrinsic, vertical: false)
+        .ownsInteraction($isHovering)
         // SwiftUI.Button supplies the trait and dims itself; this reports them.
         .spokenCombined(adding: isEnabled ? .button : [.button, .dimmed], keepingTraits: false)
         .animation(.snappy(duration: 0.15), value: isPressed)
+        .animation(.snappy(duration: 0.15), value: isHovered)
     }
 
     private func labelStyle(_ swatch: Swatch) -> AnyShapeStyle {
@@ -211,6 +229,22 @@ private let prominences: [Button.Prominence] = [.matte, .glass(.accent), .glass(
                 Button("Delete", role: .destructive, prominence: prominence) {}
                 Button("Disabled", prominence: prominence) {}
                     .disabled(true)
+            }
+        }
+    }
+    .padding(24)
+    .backdrop()
+}
+
+#Preview("Interaction") {
+    Grid(alignment: .leading, horizontalSpacing: 10, verticalSpacing: 12) {
+        ForEach(prominences, id: \.self) { prominence in
+            GridRow {
+                Button("Rest", prominence: prominence, size: .small) {}
+                ForEach(Interaction.allCases, id: \.self) { interaction in
+                    Button("\(interaction)".capitalized, prominence: prominence, size: .small) {}
+                        .forcedInteraction(interaction)
+                }
             }
         }
     }

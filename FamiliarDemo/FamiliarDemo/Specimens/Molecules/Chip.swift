@@ -54,6 +54,21 @@ extension Specimen {
                 }
             },
             Variant("Selection") { ChipSelection() },
+            Variant("Interaction") {
+                FlowLayout {
+                    Chip("Rest", behavior: .button {})
+                        .spokenCaption()
+                    Chip("Hovered", behavior: .button {})
+                        .spokenCaption()
+                        .forcedInteraction(.hovered)
+                    Chip("Focused", behavior: .button {})
+                        .spokenCaption()
+                        .forcedInteraction(.focused)
+                    Chip("Display", badge: "3")
+                        .spokenCaption()
+                        .forcedInteraction(.hovered)
+                }
+            },
             Variant("Sizes") {
                 VStack(alignment: .leading, spacing: 12) {
                     ForEach([Typography.xSmall, .small, .medium, .large], id: \.self) { size in

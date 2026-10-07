@@ -5,14 +5,21 @@ import Testing
 @MainActor
 struct ChipTests {
 
-    @Test func selectedDrawsInTheFullAccent() {
-        let tint = Familiar.Chip.Style.tint(isSelected: true, accent: .highlight)
+    @Test(arguments: [false, true])
+    func selectedDrawsInTheFullAccent(_ isHovered: Bool) {
+        let tint = Familiar.Chip.Style.tint(isSelected: true, isHovered: isHovered, accent: .highlight)
         #expect(tint?.swatch == .highlight)
         #expect(tint?.opacity == 1)
     }
 
+    @Test func hoverHintsAtTheAccent() {
+        let tint = Familiar.Chip.Style.tint(isSelected: false, isHovered: true, accent: .accent)
+        #expect(tint?.swatch == .accent)
+        #expect(tint?.opacity == 0.3)
+    }
+
     @Test func restLeavesTheGlassClear() {
-        #expect(Familiar.Chip.Style.tint(isSelected: false, accent: .accent) == nil)
+        #expect(Familiar.Chip.Style.tint(isSelected: false, isHovered: false, accent: .accent) == nil)
     }
 
     @Test func defaultsToUnselectedSmallDisplay() {

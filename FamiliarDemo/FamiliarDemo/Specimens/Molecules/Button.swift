@@ -36,6 +36,34 @@ extension Specimen {
                     }
                 }
             },
+            Variant("Interaction") {
+                VStack(alignment: .leading, spacing: 24) {
+                    ForEach(prominences, id: \.0) { name, prominence in
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(name.capitalized)
+                                .typography(.annotation)
+                                .foregroundStyle(.swatch(.muted))
+                            Pairs {
+                                GridRow {
+                                    Button("Rest", prominence: prominence) {}
+                                        .spokenCaption()
+                                    Button("Hovered", prominence: prominence) {}
+                                        .spokenCaption()
+                                        .forcedInteraction(.hovered)
+                                }
+                                GridRow {
+                                    Button("Pressed", prominence: prominence) {}
+                                        .spokenCaption()
+                                        .forcedInteraction(.pressed)
+                                    Button("Focused", prominence: prominence) {}
+                                        .spokenCaption()
+                                        .forcedInteraction(.focused)
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             Variant("Sizes") {
                 VStack(alignment: .leading, spacing: 12) {
                     ForEach([Typography.caption, .small, .cta, .title3], id: \.self) { size in

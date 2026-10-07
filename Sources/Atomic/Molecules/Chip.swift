@@ -170,9 +170,10 @@ public extension Chip {
                 .typography(typography)
         }
 
-        /// Selected fills the glass with the accent.
-        static func tint(isSelected: Bool, accent: Swatch) -> (swatch: Swatch, opacity: Double)? {
-            isSelected ? (accent, 1) : nil
+        /// Selected fills the glass with the accent; hover hints at it.
+        static func tint(isSelected: Bool, isHovered: Bool, accent: Swatch) -> (swatch: Swatch, opacity: Double)? {
+            if isSelected { return (accent, 1) }
+            return isHovered ? (accent, 0.3) : nil
         }
     }
 }
@@ -183,13 +184,18 @@ private struct Chrome<Content: View>: View {
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.colorSchemeContrast) private var contrast
+    @Environment(\.forcedInteraction) private var forcedInteraction
+    @Environment(\.isFocused) private var isFocused
+    @State private var isHovering = false
 
     let content: Content
     let isSelected: Bool
     let isInteractive: Bool
 
     var body: some View {
-        let tint = Chip.Style.tint(isSelected: isSelected, accent: accent)
+        let state = Interaction.resolve(forced: forcedInteraction, live: .init(isHovered: isHovering, isFocused: isFocused))
+        let isLive = isInteractive && isEnabled
+        let tint = Chip.Style.tint(isSelected: isSelected, isHovered: state.isHovered && isLive, accent: accent)
 
         // Padding inside the glass so the whole capsule is tappable.
         content
@@ -197,7 +203,11 @@ private struct Chrome<Content: View>: View {
             .padding(.vertical, pointSize * 0.3)
             .contentShape(.capsule)
             .familiarGlass(tint: tint.map { $0.swatch.color(in: colorScheme, contrast: contrast).opacity($0.opacity) }, interactive: isInteractive, in: .capsule)
+            .focusRing(.capsule, isFocused: state.isFocused && isLive, swatch: accent)
             .opacity(isEnabled ? 1 : 0.4)
+            .minimumTapTarget(isInteractive)
+            .ownsInteraction($isHovering)
+            .animation(.snappy(duration: 0.15), value: state.isHovered)
     }
 }
 
@@ -249,6 +259,24 @@ private struct BadgeChrome: ViewModifier {
         )
         Chip("Disabled", behavior: .button {})
             .disabled(true)
+    }
+    .padding(24)
+    .backdrop()
+}
+
+#Preview("Interaction") {
+    VStack(alignment: .leading, spacing: 12) {
+        HStack(spacing: 8) {
+            Chip("Rest", behavior: .button {})
+            Chip("Hover", behavior: .button {})
+                .forcedInteraction(.hovered)
+            Chip("Focus", behavior: .button {})
+                .forcedInteraction(.focused)
+            Chip("Selected", isSelected: true, behavior: .button {})
+                .forcedInteraction(.focused)
+        }
+        Chip("Display chips don't hover")
+            .forcedInteraction(.hovered)
     }
     .padding(24)
     .backdrop()

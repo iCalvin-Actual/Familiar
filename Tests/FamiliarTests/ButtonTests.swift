@@ -28,13 +28,14 @@ struct ButtonTests {
         #expect(style.width == .flexible)
     }
 
-    @Test func disabledWinsOverPress() {
-        #expect(Familiar.Button.Style.opacity(isEnabled: false, isPressed: true) == 0.4)
+    @Test func disabledWinsOverEveryInteraction() {
+        #expect(Familiar.Button.Style.opacity(isEnabled: false, isPressed: true, isHovered: true) == 0.4)
     }
 
-    @Test func pressDims() {
-        #expect(Familiar.Button.Style.opacity(isEnabled: true, isPressed: true) == 0.7)
-        #expect(Familiar.Button.Style.opacity(isEnabled: true, isPressed: false) == 1)
+    @Test func pressWinsOverHover() {
+        #expect(Familiar.Button.Style.opacity(isEnabled: true, isPressed: true, isHovered: true) == 0.7)
+        #expect(Familiar.Button.Style.opacity(isEnabled: true, isPressed: false, isHovered: true) == 0.8)
+        #expect(Familiar.Button.Style.opacity(isEnabled: true, isPressed: false, isHovered: false) == 1)
     }
 
     @Test func textAndSystemIconBuildsTheLabel() {
