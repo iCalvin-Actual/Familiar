@@ -22,6 +22,52 @@ extension View {
         glassEffect(.regular.tint(tint).interactive(interactive), in: shape)
         #endif
     }
+
+    /// Lets this glass morph with its neighbours when a row has handed it an
+    /// id and namespace. Apply it straight after `familiarGlass`; anywhere
+    /// else it does nothing.
+    func familiarGlassID() -> some View {
+        modifier(GlassID())
+    }
+}
+
+extension EnvironmentValues {
+    /// Set by a row of glass so its members can morph into one another.
+    @Entry var glassNamespace: Namespace.ID? = nil
+    /// This member's identity within `glassNamespace`.
+    @Entry var glassID: String? = nil
+}
+
+private struct GlassID: ViewModifier {
+    @Environment(\.glassNamespace) private var namespace
+    @Environment(\.glassID) private var id
+
+    func body(content: Content) -> some View {
+        #if os(visionOS)
+        content
+        #else
+        if let namespace, let id {
+            content.glassEffectID(id, in: namespace)
+        } else {
+            content
+        }
+        #endif
+    }
+}
+
+/// Glass that sits close enough to blend and morph. visionOS has no Liquid
+/// Glass, so there it's only the content.
+struct GlassContainer<Content: View>: View {
+    let spacing: CGFloat?
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        #if os(visionOS)
+        content
+        #else
+        GlassEffectContainer(spacing: spacing) { content }
+        #endif
+    }
 }
 
 /// Something for glass to refract in previews.

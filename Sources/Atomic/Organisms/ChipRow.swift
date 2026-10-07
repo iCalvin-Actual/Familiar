@@ -9,7 +9,8 @@ import SwiftUI
 
 /// A single line of chips that scrolls when it overflows, under an optional
 /// header. Inset inside the scroll view, so chips scroll edge to edge but rest
-/// in line with the header and the page.
+/// in line with the header and the page. The chips share one glass container,
+/// so they morph as they change.
 public struct ChipRow: View {
     public let header: SectionHeader?
     public let chips: [Chip]
@@ -17,6 +18,7 @@ public struct ChipRow: View {
 
     @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
     @Environment(\.forcedVoiceOver) private var forcedVoiceOver
+    @Namespace private var glassNamespace
 
     public init(header: SectionHeader? = nil, chips: [Chip], inset: CGFloat = Spacing.xLarge) {
         self.header = header
@@ -31,10 +33,14 @@ public struct ChipRow: View {
                     .padding(.horizontal, inset)
             }
             ScrollView(.horizontal) {
-                HStack(spacing: Spacing.small) {
-                    // By position: two identical chips are a legitimate request.
-                    ForEach(Array(chips.enumerated()), id: \.offset) { _, chip in
-                        chip
+                GlassContainer(spacing: Spacing.small) {
+                    HStack(spacing: Spacing.small) {
+                        // By position: two identical chips are a legitimate request.
+                        ForEach(Array(chips.enumerated()), id: \.offset) { index, chip in
+                            chip
+                                .environment(\.glassNamespace, glassNamespace)
+                                .environment(\.glassID, "chip-\(index)")
+                        }
                     }
                 }
                 .padding(.horizontal, inset)

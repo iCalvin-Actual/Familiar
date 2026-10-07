@@ -204,6 +204,7 @@ private struct Chrome<Content: View>: View {
             .padding(.vertical, pointSize * 0.3)
             .contentShape(.capsule)
             .familiarGlass(tint: tint.map { $0.swatch.color(in: colorScheme, contrast: contrast).opacity($0.opacity) }, interactive: isInteractive, in: .capsule)
+            .familiarGlassID()
             .focusRing(.capsule, isFocused: state.isFocused && isLive, swatch: accent)
             .opacity(isEnabled ? 1 : 0.4)
             .minimumTapTarget(isInteractive)
