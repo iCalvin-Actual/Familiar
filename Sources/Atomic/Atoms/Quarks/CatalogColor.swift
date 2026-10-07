@@ -30,3 +30,32 @@ public extension Swatch {
     /// Every catalog colour, in the order the catalog should show them.
     static let catalog: [Swatch] = [.surface, .hairline, .highlight]
 }
+
+// MARK: - Previews
+
+#Preview("Catalog colours") {
+    VStack(spacing: 0) {
+        ForEach([ColorScheme.light, .dark], id: \.self) { scheme in
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(Swatch.catalog, id: \.self) { swatch in
+                    HStack(spacing: 12) {
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .fill(.swatch(swatch))
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .strokeBorder(.swatch(.hairline))
+                            }
+                            .frame(width: 44, height: 44)
+                        Text(swatch.name ?? "")
+                        Spacer()
+                    }
+                }
+            }
+            .foregroundStyle(.swatch(.ink))
+            .padding()
+            .frame(width: 375)
+            .background(.swatch(.canvas))
+            .environment(\.colorScheme, scheme)
+        }
+    }
+}

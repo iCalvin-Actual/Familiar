@@ -51,3 +51,23 @@ public extension FontFamily {
     /// Every bundled family, in the order the catalog should show them.
     static let all: [FontFamily] = [.sharpie, .array, .arrayWide]
 }
+
+// MARK: - Previews
+
+#Preview("Families") {
+    VStack(alignment: .leading, spacing: 16) {
+        ForEach(FontFamily.all, id: \.self) { family in
+            VStack(alignment: .leading, spacing: 4) {
+                Text(family.isAvailable ? family.name : "\(family.name): not registered")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                ForEach([Font.Weight.regular, .semibold, .bold, .black], id: \.self) { weight in
+                    Text("Familiar · \(Int(weight.numericWeight))")
+                        .font(family.font(size: 24, weight: weight) ?? .system(size: 24, weight: weight))
+                }
+            }
+        }
+    }
+    .padding()
+    .frame(width: 375, alignment: .leading)
+}

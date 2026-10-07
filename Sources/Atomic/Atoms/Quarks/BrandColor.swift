@@ -102,3 +102,52 @@ public extension Swatch {
     /// Every brand swatch, in `BrandColor.all` order.
     static let brandColors: [Swatch] = BrandColor.all.map(Swatch.brand)
 }
+
+// MARK: - Previews
+
+#Preview("Brand colours") {
+    VStack(spacing: 0) {
+        ForEach([ColorScheme.light, .dark], id: \.self) { scheme in
+            BrandColorChart(scheme: scheme, contrast: .standard)
+        }
+    }
+}
+
+#Preview("Increase Contrast") {
+    VStack(spacing: 0) {
+        ForEach([ColorScheme.light, .dark], id: \.self) { scheme in
+            BrandColorChart(scheme: scheme, contrast: .increased)
+        }
+    }
+}
+
+/// Every brand colour as a chip, with its name and the hex it resolves to.
+private struct BrandColorChart: View {
+    let scheme: ColorScheme
+    let contrast: ColorSchemeContrast
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ForEach(BrandColor.all, id: \.self) { brand in
+                HStack(spacing: 12) {
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .fill(brand.color(for: scheme, contrast: contrast))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .strokeBorder(BrandColor.muted.color(for: scheme, contrast: contrast).opacity(0.3))
+                        }
+                        .frame(width: 44, height: 44)
+                    Text(brand.name)
+                    Spacer()
+                    Text(brand.hex(for: scheme, contrast: contrast).description)
+                        .monospaced()
+                        .foregroundStyle(BrandColor.muted.color(for: scheme, contrast: contrast))
+                }
+            }
+        }
+        .foregroundStyle(BrandColor.ink.color(for: scheme, contrast: contrast))
+        .padding()
+        .frame(width: 375)
+        .background(BrandColor.canvas.color(for: scheme, contrast: contrast))
+    }
+}
