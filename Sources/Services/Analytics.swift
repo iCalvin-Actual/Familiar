@@ -18,4 +18,15 @@ public struct AnalyticsEvent: Hashable, Sendable {
     }
 }
 
-// icc-analytics
+/// Where events go. The package emits them; the host app decides what
+/// receives them.
+public protocol Analytics: Sendable {
+    func track(_ event: AnalyticsEvent)
+}
+
+/// Drops every event. The default, so previews and tests need no setup.
+public struct NoAnalytics: Analytics {
+    public init() {}
+
+    public func track(_ event: AnalyticsEvent) {}
+}
