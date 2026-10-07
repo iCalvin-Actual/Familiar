@@ -8,4 +8,11 @@
 import Familiar
 import os
 
-// icc-console-analytics
+/// The catalog's analytics vendor: the console.
+struct ConsoleAnalytics: Analytics {
+    private let logger = Logger(subsystem: "FamiliarDemo", category: "Analytics")
+
+    func track(_ event: AnalyticsEvent) {
+        logger.info("\(event.name, privacy: .public) \(event.properties, privacy: .public)")
+    }
+}

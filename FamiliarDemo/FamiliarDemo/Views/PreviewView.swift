@@ -39,6 +39,8 @@ struct PreviewView: View {
         .preferredColorScheme(scheme)
         .accentSwatch(accent.swatch)
         .navigationTitle(specimen.name)
+        .tracksAppearance(AnalyticsEvent("specimen_viewed", properties: ["name": specimen.name]))
+        .tracksTaps(AnalyticsEvent("specimen_tapped", properties: ["name": specimen.name]))
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
