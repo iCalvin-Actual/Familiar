@@ -7,4 +7,14 @@
 
 import CoreGraphics
 
-// icc-spacing
+/// Fixed gaps between and around components. Padding inside a component
+/// scales with its type instead, from `typographyPointSize`.
+public enum Spacing {
+    public static let xxSmall: CGFloat = 2
+    public static let xSmall: CGFloat = 4
+    public static let small: CGFloat = 8
+    public static let medium: CGFloat = 12
+    public static let large: CGFloat = 16
+    public static let xLarge: CGFloat = 24
+
+}
