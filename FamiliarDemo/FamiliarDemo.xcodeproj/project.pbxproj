@@ -261,6 +261,7 @@
 		000000000000000111000000 /* Debug configuration for PBXNativeTarget "FamiliarDemo" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G9LCFVC8QK;
@@ -302,6 +303,7 @@
 		000000000000000112000000 /* Release configuration for PBXNativeTarget "FamiliarDemo" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G9LCFVC8QK;

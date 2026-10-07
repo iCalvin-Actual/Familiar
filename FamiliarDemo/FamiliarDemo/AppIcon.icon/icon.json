@@ -1,0 +1,40 @@
+{
+  "fill" : {
+    "automatic-gradient" : "extended-gray:0.25000,1.00000"
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "solid" : "extended-srgb:0.20392,0.78039,0.34902,1.00000"
+          },
+          "image-name" : "cat.fill@3x.png",
+          "name" : "cat.fill@3x",
+          "position" : {
+            "scale" : 0.8,
+            "translation-in-points" : [
+              0,
+              30
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.3
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
