@@ -17,6 +17,7 @@ extension Specimen {
                 HStack(alignment: .top, spacing: 16) {
                     ForEach([Typography.xSmall, .small, .medium, .xLarge, .xxLarge], id: \.self) { size in
                         LoadingIndicator(size: size)
+                            .spokenCaption()
                     }
                 }
             },
@@ -25,6 +26,7 @@ extension Specimen {
                     ForEach([("title3", Typography.title3), ("body", .body), ("caption", .caption)], id: \.0) { name, size in
                         HStack(alignment: .top, spacing: 8) {
                             LoadingIndicator()
+                                .spokenCaption()
                             Text(name)
                         }
                         .typography(size)

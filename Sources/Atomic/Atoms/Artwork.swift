@@ -67,15 +67,20 @@ public struct Artwork: View {
     public let source: Source
     public let size: Size
 
+    /// What VoiceOver reads. `nil` leaves the artwork decorative, for when
+    /// nearby text already says what it shows.
+    public let label: String?
+
     /// `.fill` crops to the frame, for photos and covers; `.fit` shows the
     /// whole image, for logos and wordmarks. `nil` crops fixed sizes and fits
     /// `Size.fill`.
     public let contentMode: ContentMode?
 
-    public init(_ source: Source, size: Size = .medium, contentMode: ContentMode? = nil) {
+    public init(_ source: Source, size: Size = .medium, contentMode: ContentMode? = nil, label: String? = nil) {
         self.source = source
         self.size = size
         self.contentMode = contentMode
+        self.label = label
     }
 
     var resolvedContentMode: ContentMode {
@@ -114,10 +119,12 @@ public struct Artwork: View {
         image
             .resizable()
             .aspectRatio(contentMode: resolvedContentMode)
+            .modifier(Described(label: label, status: .loaded))
     }
 
     private func placeholder(_ status: Status) -> some View {
         Placeholder(isLoading: status == .loading, size: size)
+            .modifier(Described(label: label, status: status))
     }
 
     /// Loads through the environment's `ImageLoader`, so the host decides how
@@ -157,6 +164,25 @@ public struct Artwork: View {
                 pointSize: artwork.size.dimension.map { CGSize(width: $0, height: $0) },
                 scale: scale
             )
+        }
+    }
+
+    private struct Described: ViewModifier {
+        let label: String?
+        let status: Status
+
+        func body(content: Content) -> some View {
+            content
+                .accessibilityElement(children: .ignore)
+                .spoken(label.map { Spoken($0, value: Artwork.accessibilityValue(for: status), traits: .image) })
+        }
+    }
+
+    static func accessibilityValue(for status: Status) -> String {
+        switch status {
+        case .loaded:       ""
+        case .loading:      "Loading"
+        case .unavailable:  "Unavailable"
         }
     }
 }
@@ -252,6 +278,15 @@ private let missing = URL(string: "https://example.invalid/missing.png")!
             Artwork(.file("definitely-not-an-image"), size: .small)
             Artwork(.file("definitely-not-an-image"), size: .medium)
         }
+    }
+    .padding()
+}
+
+#Preview("Accessibility labels") {
+    HStack(spacing: 16) {
+        Artwork(lake, size: .small, label: "A lake below mountains")
+        Artwork(.loading, size: .small, label: "Album cover")
+        Artwork(.remote(missing), size: .small, label: "Profile photo")
     }
     .padding()
 }

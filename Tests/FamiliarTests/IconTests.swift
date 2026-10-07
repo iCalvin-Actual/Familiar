@@ -30,4 +30,22 @@ struct IconTests {
         #expect(URL.familiarImage(named: "definitely-not-an-icon") == nil)
     }
 
+    @MainActor @Test func systemSymbolsDescribeThemselves() {
+        #expect(!Icon(source: .system("star.fill")).isDecorative)
+    }
+
+    /// Our own images speak without help from the call site.
+    @MainActor @Test(arguments: Icon.Symbol.allCases)
+    func bundledSymbolsDescribeThemselves(_ symbol: Icon.Symbol) {
+        #expect(!symbol.accessibilityLabel.isEmpty)
+        #expect(Icon(source: .symbol(symbol)).spokenLabel == symbol.accessibilityLabel)
+        #expect(Icon(source: .symbol(symbol), label: "Home").spokenLabel == "Home")
+        #expect(!Icon(source: .symbol(symbol)).isDecorative)
+    }
+
+    @MainActor @Test(arguments: [Icon.Source.file("nextapp"), .bundle("cover")])
+    func otherSourcesAreDecorativeUnlessLabelled(_ source: Icon.Source) {
+        #expect(Icon(source: source).isDecorative)
+        #expect(!Icon(source: source, label: "Familiar").isDecorative)
+    }
 }

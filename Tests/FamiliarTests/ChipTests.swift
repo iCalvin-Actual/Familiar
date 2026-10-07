@@ -39,6 +39,20 @@ struct ChipTests {
         #expect(chip.badge == .text("3"))
     }
 
+    @Test func speaksItsTitleThenItsBadge() {
+        let chip = Familiar.Chip("Unread", badge: "3")
+        #expect(chip.spokenTitle == "Unread")
+        #expect(chip.spokenText == "Unread, 3")
+    }
+
+    @Test func iconOnlyChipsSpeakTheirLabel() {
+        #expect(Familiar.Chip(.icon(.symbol(.wordmark))).spokenText == "Wordmark")
+        #expect(Familiar.Chip(.systemIcon("star", label: "Starred")).spokenText == "Starred")
+        // An unlabelled SF Symbol or file has nothing for a row to say.
+        #expect(Familiar.Chip(.systemIcon("star")).spokenText == nil)
+        #expect(Familiar.Chip(.icon(.file("nextapp"))).spokenText == nil)
+    }
+
     @Test func badgeScalesWithTheLabel() {
         let chip = Familiar.Chip("Filter", badge: "3", size: .medium)
         #expect(chip.badgeTypography.size == Typography.medium.size * 0.8)

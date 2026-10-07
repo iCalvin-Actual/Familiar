@@ -15,4 +15,9 @@ struct LoadingIndicatorTests {
         #expect(LoadingIndicator.controlSize(for: Typography.xLarge.size) == .large)
         #expect(LoadingIndicator.controlSize(for: Typography.xxLarge.size) == .extraLarge)
     }
+
+    @MainActor @Test func keepsTheSystemLabelByDefault() {
+        #expect(LoadingIndicator().label == nil)
+        #expect(LoadingIndicator(label: "Loading photos").label == "Loading photos")
+    }
 }

@@ -13,6 +13,14 @@ public struct Icon: View {
     /// set's name; `IconTests` fails if a case has no image behind it.
     public enum Symbol: String, CaseIterable, Sendable {
         case wordmark
+
+        /// What VoiceOver reads when the call site doesn't say. Every case
+        /// needs one, so our own images are never silent.
+        public var accessibilityLabel: String {
+            switch self {
+            case .wordmark: "Wordmark"
+            }
+        }
     }
 
     public enum Source: Hashable, Sendable {
@@ -27,6 +35,12 @@ public struct Icon: View {
         public static func bundle(_ name: String) -> Source {
             .bundle(name, .main)
         }
+
+        /// A bundled symbol's own description. Files and bundle images are
+        /// the call site's to describe.
+        public var accessibilityLabel: String? {
+            if case .symbol(let symbol) = self { symbol.accessibilityLabel } else { nil }
+        }
     }
 
     public let source: Source
@@ -36,9 +50,15 @@ public struct Icon: View {
     /// the icon stands alone or should deliberately differ from its context.
     public let typography: Typography?
 
-    public init(source: Source, size typography: Typography? = nil) {
+    /// What VoiceOver reads. `nil` keeps an SF Symbol's or bundled symbol's
+    /// own description and hides any other source, whose asset name wouldn't
+    /// mean anything.
+    public let label: String?
+
+    public init(source: Source, size typography: Typography? = nil, label: String? = nil) {
         self.source = source
         self.typography = typography
+        self.label = label
     }
 
     public var body: some View {
@@ -49,6 +69,22 @@ public struct Icon: View {
                 Resolved(source: source)
             }
         }
+        .spoken(spoken)
+    }
+
+    /// `nil` when decorative. An empty label keeps an SF Symbol's own description.
+    var spoken: Spoken? {
+        isDecorative ? nil : Spoken(spokenLabel ?? "", traits: .image)
+    }
+
+    var spokenLabel: String? {
+        label ?? source.accessibilityLabel
+    }
+
+    var isDecorative: Bool {
+        guard spokenLabel == nil else { return false }
+        if case .system = source { return false }
+        return true
     }
 
     /// Split out so that `@Environment` reads the scope *including* any
@@ -129,6 +165,16 @@ private struct GlyphBaseline: ViewModifier {
         }
         .typography(.caption)
     }
+    .padding()
+}
+
+#Preview("Accessibility labels") {
+    VStack(alignment: .leading, spacing: 12) {
+        Icon(source: .system("star.fill"))
+        Icon(source: .system("star.fill"), label: "Favorite")
+        Icon(source: .symbol(.wordmark), label: "Familiar")
+    }
+    .typography(.title2)
     .padding()
 }
 

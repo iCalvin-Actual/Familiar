@@ -8,6 +8,10 @@
 import SwiftUI
 import Familiar
 
+/// What VoiceOver reads for the sample photo. Loading and failure arrive as
+/// its value, so the label stays the same in every state.
+let lakeDescription = "A lake below snowy mountains"
+
 // Served by `MockImageLoader.catalog`.
 let samplePhoto = Artwork.Source.remote(URL(string: "mock://lake")!)
 let slowPhoto = Artwork.Source.remote(URL(string: "mock://slow")!)

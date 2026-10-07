@@ -18,17 +18,23 @@ extension Specimen {
                     GridRow {
                         Text(".system")
                         Icon(source: .system("star.fill"))
+                            .spokenCaption()
                         Icon(source: .system("star.fill")).foregroundStyle(.swatch(.highlight))
+                            .spokenCaption()
                     }
                     GridRow {
                         Text(".symbol")
                         Icon(source: .symbol(.wordmark))
+                            .spokenCaption()
                         Icon(source: .symbol(.wordmark)).foregroundStyle(.swatch(.highlight))
+                            .spokenCaption()
                     }
                     GridRow {
                         Text(".file")
                         Icon(source: .file("nextapp"))
+                            .spokenCaption()
                         Icon(source: .file("nextapp")).foregroundStyle(.swatch(.highlight))
+                            .spokenCaption()
                     }
                 }
                 .typography(.title3)
@@ -37,6 +43,7 @@ extension Specimen {
                 HStack(alignment: .firstTextBaseline, spacing: 16) {
                     ForEach([Typography.xSmall, .small, .medium, .large, .xLarge, .xxLarge], id: \.self) { size in
                         Icon(source: .system("bolt.fill"), size: size)
+                            .spokenCaption()
                     }
                 }
             },
@@ -45,6 +52,7 @@ extension Specimen {
                     ForEach([("title3", Typography.title3), ("body", .body), ("caption", .caption)], id: \.0) { name, size in
                         HStack(alignment: .firstTextBaseline, spacing: 8) {
                             Icon(source: .system("star.fill"))
+                                .spokenCaption()
                             Text(name)
                         }
                         .typography(size)
@@ -55,6 +63,7 @@ extension Specimen {
                 HStack(alignment: .firstTextBaseline, spacing: 12) {
                     ForEach(brandSwatches, id: \.0) { _, swatch in
                         Icon(source: .system("circle.fill"))
+                            .spokenCaption()
                             .foregroundStyle(.swatch(swatch))
                     }
                 }
@@ -63,15 +72,19 @@ extension Specimen {
             Variant("Rendering modes") {
                 HStack(alignment: .firstTextBaseline, spacing: 20) {
                     Icon(source: .system("person.crop.circle.badge.checkmark"))
+                        .spokenCaption()
                         .symbolRenderingMode(.monochrome)
                         .foregroundStyle(.swatch(.accent))
                     Icon(source: .system("person.crop.circle.badge.checkmark"))
+                        .spokenCaption()
                         .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(.swatch(.accent))
                     Icon(source: .system("person.crop.circle.badge.checkmark"))
+                        .spokenCaption()
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(.swatch(.signature), .swatch(.accent))
                     Icon(source: .system("person.crop.circle.badge.checkmark"))
+                        .spokenCaption()
                         .symbolRenderingMode(.multicolor)
                 }
                 .typography(.xxLarge)

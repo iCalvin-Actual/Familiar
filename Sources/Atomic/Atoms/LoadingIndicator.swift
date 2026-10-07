@@ -12,16 +12,21 @@ public struct LoadingIndicator: View {
     /// `nil` inherits the type scope, like `Icon`.
     public let typography: Typography?
 
-    public init(size typography: Typography? = nil) {
+    /// What VoiceOver reads, such as "Loading photos". `nil` keeps the
+    /// system's "In progress".
+    public let label: String?
+
+    public init(size typography: Typography? = nil, label: String? = nil) {
         self.typography = typography
+        self.label = label
     }
 
     public var body: some View {
         Group {
             if let typography {
-                Resolved().typography(typography)
+                Resolved(label: label).typography(typography)
             } else {
-                Resolved()
+                Resolved(label: label)
             }
         }
     }
@@ -40,7 +45,14 @@ public struct LoadingIndicator: View {
     private struct Resolved: View {
         @Environment(\.typographyPointSize) private var pointSize
 
+        let label: String?
+
         var body: some View {
+            // An empty label keeps the system's "In progress".
+            spinner.spoken(Spoken(label ?? ""))
+        }
+
+        private var spinner: some View {
             ProgressView()
                 .controlSize(LoadingIndicator.controlSize(for: pointSize))
         }
@@ -79,6 +91,11 @@ public struct LoadingIndicator: View {
         LoadingIndicator(size: .xxLarge)
     }
     .padding()
+}
+
+#Preview("Accessibility label") {
+    LoadingIndicator(size: .xLarge, label: "Loading photos")
+        .padding()
 }
 
 #Preview("Light and dark") {

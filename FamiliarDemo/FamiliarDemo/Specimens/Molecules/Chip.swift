@@ -18,7 +18,7 @@ private struct ChipSelection: View {
                 Chip(drink, isSelected: selected.contains(drink), behavior: .button {
                     if selected.remove(drink) == nil { selected.insert(drink) }
                 })
-                // icc-spoken
+                .spokenCaption()
             }
         }
     }
@@ -33,7 +33,9 @@ extension Specimen {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
                         Chip("Display")
+                            .spokenCaption()
                         Chip("Button", behavior: .button {})
+                            .spokenCaption()
                         Chip(
                             "Menu",
                             systemIcon: "line.3.horizontal.decrease",
@@ -44,8 +46,10 @@ extension Specimen {
                                 SwiftUI.Button("Reset", role: .destructive) {}
                             }
                         )
+                        .spokenCaption()
                     }
                     Chip("Disabled", behavior: .button {})
+                        .spokenCaption()
                         .disabled(true)
                 }
             },
@@ -55,8 +59,11 @@ extension Specimen {
                     ForEach([Typography.xSmall, .small, .medium, .large], id: \.self) { size in
                         HStack(alignment: .firstTextBaseline, spacing: 8) {
                             Chip("Plain", size: size)
+                                .spokenCaption()
                             Chip("Selected", isSelected: true, size: size)
+                                .spokenCaption()
                             Chip("Badged", badge: "3", size: size)
+                                .spokenCaption()
                         }
                     }
                 }
@@ -64,9 +71,13 @@ extension Specimen {
             Variant("Badges") {
                 FlowLayout {
                     Chip("Plain")
+                        .spokenCaption()
                     Chip("Badged", badge: "3")
+                        .spokenCaption()
                     Chip("Wide badge", badge: "sold out")
+                        .spokenCaption()
                     Chip("Selected", badge: "9", isSelected: true, behavior: .button {})
+                        .spokenCaption()
                 }
             },
             Variant("Accent swatches") {
@@ -74,8 +85,11 @@ extension Specimen {
                     ForEach(accentSwatches, id: \.0) { name, swatch in
                         HStack(alignment: .firstTextBaseline, spacing: 8) {
                             Chip(name, isSelected: true)
+                                .spokenCaption()
                             Chip("Plain")
+                                .spokenCaption()
                             Chip("Badged", badge: "2", isSelected: true)
+                                .spokenCaption()
                         }
                         .accentSwatch(swatch)
                     }

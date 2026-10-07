@@ -26,4 +26,9 @@ struct LabelTests {
         #expect(Familiar.Label.lineLimit(2, at: .accessibility1) == nil)
         #expect(Familiar.Label.lineLimit(nil, at: .large) == nil)
     }
+
+    @Test func iconOnlyStylesCarryALabel() {
+        #expect(Familiar.Label(systemIcon: "trash", label: "Delete").style == .icon(.system("trash"), label: "Delete"))
+        #expect(Familiar.Label.Style.systemIcon("trash") == .icon(.system("trash")))
+    }
 }

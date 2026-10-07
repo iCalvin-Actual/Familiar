@@ -23,10 +23,13 @@ extension Specimen {
                         Pairs {
                             GridRow {
                                 Button(name.capitalized, prominence: prominence) {}
+                                    .spokenCaption()
                                 Button("Delete", role: .destructive, prominence: prominence) {}
+                                    .spokenCaption()
                             }
                             GridRow {
                                 Button("Off", prominence: prominence) {}
+                                    .spokenCaption()
                                     .disabled(true)
                             }
                         }
@@ -38,10 +41,13 @@ extension Specimen {
                     ForEach([Typography.caption, .small, .cta, .title3], id: \.self) { size in
                         HStack(alignment: .firstTextBaseline, spacing: 12) {
                             Button("Matte", size: size) {}
+                                .spokenCaption()
                             Button("Glass", prominence: .glass(.accent), size: size) {}
+                                .spokenCaption()
                         }
                     }
                     Button("Display", size: .display) {}
+                        .spokenCaption()
                         .displayFamily(.display)
                 }
             },
@@ -52,12 +58,17 @@ extension Specimen {
                     // label, running past the edge.
                     TightSpace {
                         Button("Flexible: continue to checkout") {}
+                            .spokenCaption()
                         Button("Intrinsic: continue to checkout", width: .intrinsic) {}
+                            .spokenCaption()
                     }
                     Button("Fill", width: .fill) {}
+                        .spokenCaption()
                     HStack(alignment: .firstTextBaseline, spacing: 12) {
                         Button("Cancel", prominence: .outlined, width: .fill) {}
+                            .spokenCaption()
                         Button("Continue", prominence: .glass(.accent), width: .fill) {}
+                            .spokenCaption()
                     }
                 }
             },
@@ -65,18 +76,24 @@ extension Specimen {
                 Pairs {
                     GridRow {
                         Button("Share", systemIcon: "square.and.arrow.up") {}
+                            .spokenCaption()
                         Button(.icon(.symbol(.wordmark)), prominence: .outlined) {}
+                            .spokenCaption()
                     }
                     GridRow {
-                        Button(.systemIcon("trash"), role: .destructive, prominence: .tinted) {}
-                        Button(.systemIcon("trash"), role: .destructive, prominence: .glass()) {}
+                        Button(.systemIcon("trash", label: "Delete"), role: .destructive, prominence: .tinted) {}
+                            .spokenCaption()
+                        Button(.systemIcon("trash", label: "Delete"), role: .destructive, prominence: .glass()) {}
+                            .spokenCaption()
                     }
                     GridRow {
                         Button(.textIcon("Open the app", .file("nextapp")), prominence: .glass(), size: .title3) {}
+                            .spokenCaption()
                             .gridCellColumns(2)
                     }
                     GridRow {
                         Button("Remove", systemIcon: "trash", role: .destructive, prominence: .plain) {}
+                            .spokenCaption()
                     }
                 }
             },
@@ -86,10 +103,13 @@ extension Specimen {
                         Pairs {
                             GridRow {
                                 Button(name) {}
+                                    .spokenCaption()
                                 Button("Tinted", prominence: .tinted) {}
+                                    .spokenCaption()
                             }
                             GridRow {
                                 Button("Outlined", prominence: .outlined) {}
+                                    .spokenCaption()
                             }
                         }
                         .accentSwatch(swatch)
@@ -98,12 +118,17 @@ extension Specimen {
             },
             Variant("SwiftUI.Button") {
                 VStack(alignment: .leading, spacing: 12) {
+                    // Familiar's Label rather than a bare string, so the style
+                    // can caption what VoiceOver reads.
                     SwiftUI.Button {} label: { Label(text: "Matte") }
                         .buttonStyle(.familiar)
+                        .spokenCaption()
                     SwiftUI.Button {} label: { Label(text: "Glass") }
                         .buttonStyle(.familiar(.glass(.accent)))
+                        .spokenCaption()
                     SwiftUI.Button {} label: { Label(icon: .symbol(.wordmark)) }
                         .buttonStyle(.familiar(.outlined))
+                        .spokenCaption()
                 }
             },
         ]

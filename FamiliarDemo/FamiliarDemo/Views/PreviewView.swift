@@ -13,6 +13,7 @@ struct PreviewView: View {
 
     @State private var scheme: ColorScheme?
     @State private var isAccessibilitySize = false
+    @State private var showsVoiceOver = true
     @State private var accent: Accent = .app
 
     var body: some View {
@@ -38,6 +39,10 @@ struct PreviewView: View {
         .dynamicTypeSize(isAccessibilitySize ? .accessibility3 ... .accessibility3 : .xSmall ... .accessibility5)
         .preferredColorScheme(scheme)
         .accentSwatch(accent.swatch)
+        // Each component captions itself with what VoiceOver reads, laid out
+        // as it would be for VoiceOver.
+        .showsSpokenCaptions(showsVoiceOver)
+        .forcedVoiceOver(showsVoiceOver ? true : nil)
         .navigationTitle(specimen.name)
         .tracksAppearance(AnalyticsEvent("specimen_viewed", properties: ["name": specimen.name]))
         .tracksTaps(AnalyticsEvent("specimen_tapped", properties: ["name": specimen.name]))
@@ -55,10 +60,16 @@ struct PreviewView: View {
                         }
                     }
                     Toggle("Accessibility XL", isOn: $isAccessibilitySize)
+                    Toggle("VoiceOver", isOn: $showsVoiceOver)
                 } label: {
-                    SwiftUI.Label("Options", systemImage: "slider.horizontal.3")
+                    Label(systemIcon: "slider.horizontal.3", label: "Options")
                 }
+                .menuStyle(.button)
+                .buttonStyle(.familiar(.glass(), size: .body))
             }
+            #if !os(visionOS)
+            .sharedBackgroundVisibility(.hidden)
+            #endif
         }
     }
 }

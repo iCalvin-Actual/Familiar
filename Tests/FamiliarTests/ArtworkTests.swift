@@ -29,4 +29,14 @@ struct ArtworkTests {
         #expect(Artwork.Source.bundle("cover") == .bundle("cover", .main))
     }
 
+    @Test func decorativeUnlessLabelled() {
+        #expect(Artwork(.file("nextapp")).label == nil)
+        #expect(Artwork(.file("nextapp"), label: "App icon").label == "App icon")
+    }
+
+    @Test func placeholdersSayWhy() {
+        #expect(Artwork.accessibilityValue(for: .loaded).isEmpty)
+        #expect(!Artwork.accessibilityValue(for: .loading).isEmpty)
+        #expect(!Artwork.accessibilityValue(for: .unavailable).isEmpty)
+    }
 }

@@ -78,7 +78,9 @@ public struct Rating: View {
         format(value)
     }
 
-    // icc-spokenvalue
+    var spokenValue: String {
+        "\(formattedValue) out of \(maximum) stars"
+    }
 
     var stars: [Star] {
         Self.stars(for: value, outOf: maximum)
@@ -114,6 +116,8 @@ public struct Rating: View {
             }
         }
         .typography(typography)
+        .accessibilityElement(children: .ignore)
+        .spoken(Spoken(spokenValue))
     }
 }
 

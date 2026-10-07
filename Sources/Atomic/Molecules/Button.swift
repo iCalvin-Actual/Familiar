@@ -121,7 +121,6 @@ private struct Chrome: View {
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.colorSchemeContrast) private var contrast
-    // icc-interaction-chrome-state
 
     let configuration: ButtonStyleConfiguration
     let prominence: Button.Prominence
@@ -140,7 +139,6 @@ private struct Chrome: View {
         default:             nil
         }
         let isGlass = glassTint != nil
-        // icc-interaction-chrome
         // Interactive glass has its own press response.
         let isPressed = configuration.isPressed && !isGlass
 
@@ -172,6 +170,8 @@ private struct Chrome: View {
         .opacity(Button.Style.opacity(isEnabled: isEnabled, isPressed: isPressed))
         .scaleEffect(isPressed ? 0.97 : 1)
         .fixedSize(horizontal: width == .intrinsic, vertical: false)
+        // SwiftUI.Button supplies the trait and dims itself; this reports them.
+        .spokenCombined(adding: isEnabled ? .button : [.button, .dimmed], keepingTraits: false)
         .animation(.snappy(duration: 0.15), value: isPressed)
     }
 

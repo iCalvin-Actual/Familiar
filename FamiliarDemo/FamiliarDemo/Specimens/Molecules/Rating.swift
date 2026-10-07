@@ -18,7 +18,9 @@ extension Specimen {
                     ForEach([0, 2.2, 3.5, 4.74, 5], id: \.self) { value in
                         HStack(alignment: .firstTextBaseline, spacing: 24) {
                             Rating(value, style: .compact)
+                                .spokenCaption()
                             Rating(value, style: .regular)
+                                .spokenCaption()
                         }
                     }
                 }
@@ -26,24 +28,32 @@ extension Specimen {
             Variant("Formats") {
                 VStack(alignment: .leading, spacing: 12) {
                     Rating(4.74)
+                        .spokenCaption()
                     Rating(4.74, format: .number.precision(.fractionLength(0)))
+                        .spokenCaption()
                     Rating(4.74, format: .number.precision(.fractionLength(2)))
+                        .spokenCaption()
                     Rating(4.74, formatter: {
                         let formatter = NumberFormatter()
                         formatter.maximumFractionDigits = 1
                         formatter.positiveSuffix = " / 5"
                         return formatter
                     }())
+                    .spokenCaption()
                 }
             },
             Variant("Scales and sizes") {
                 VStack(alignment: .leading, spacing: 12) {
                     Rating(7.5, outOf: 10, style: .regular)
+                        .spokenCaption()
                     Rating(2, outOf: 3, style: .regular)
+                        .spokenCaption()
                     ForEach([Typography.caption, .small, .body, .title3], id: \.self) { size in
                         HStack(alignment: .firstTextBaseline, spacing: 16) {
                             Rating(3.5, size: size)
+                                .spokenCaption()
                             Rating(3.5, style: .regular, size: size)
+                                .spokenCaption()
                         }
                     }
                 }
@@ -53,7 +63,9 @@ extension Specimen {
                     ForEach([Swatch.caution, .accent, .signature, .positive], id: \.self) { swatch in
                         HStack(alignment: .firstTextBaseline, spacing: 16) {
                             Rating(4.5, swatch: swatch)
+                                .spokenCaption()
                             Rating(4.5, style: .regular, swatch: swatch)
+                                .spokenCaption()
                         }
                     }
                 }

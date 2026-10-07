@@ -12,6 +12,7 @@ import SwiftUI
 public struct Chip: View {
 
     public enum Behavior {
+        /// Not focusable; VoiceOver reads it as text, not as a button.
         case display
         case button(() -> Void)
         case menu(MenuContent)
@@ -45,6 +46,7 @@ public struct Chip: View {
     public let typography: Typography
     public let behavior: Behavior
 
+    @Environment(\.isEnabled) private var isEnabled
     @Environment(\.analytics) private var analytics
     @Environment(\.tapEvent) private var tapEvent
 
@@ -101,6 +103,7 @@ public struct Chip: View {
             }
         }
         .modifier(Style(isSelected: isSelected, size: typography, isInteractive: behavior.isInteractive))
+        .spoken(spoken)
     }
 
     private var content: some View {
@@ -113,11 +116,35 @@ public struct Chip: View {
                     .typography(badgeTypography)
             }
         }
+        // One element, read as "Unread, 3", even when the chip isn't a button.
+        .accessibilityElement(children: .combine)
     }
 
     /// Derived from the label so the two keep their ratio under Dynamic Type.
     var badgeTypography: Typography {
         typography.with(size: typography.size * 0.8)
+    }
+
+    /// The words on the chip, without its badge: what a `ChipRow` names it
+    /// by. `nil` when an icon has nothing to say.
+    var spokenTitle: String? {
+        label.spokenText
+    }
+
+    /// The chip as it reads on its own, badge included: "Unread, 3".
+    var spokenText: String? {
+        guard let title = spokenTitle else { return nil }
+        guard let badge = badge?.spokenText else { return title }
+        return "\(title), \(badge)"
+    }
+
+    /// Buttons and menus carry the button trait already; it's here so the
+    /// report says so too.
+    var spoken: Spoken {
+        var traits: Spoken.Traits = isSelected ? .selected : []
+        if behavior.isInteractive { traits.insert(.button) }
+        if !isEnabled { traits.insert(.dimmed) }
+        return Spoken(spokenText ?? "", traits: traits)
     }
 }
 

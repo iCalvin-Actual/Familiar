@@ -11,17 +11,27 @@ public struct Label: View {
 
     public enum Style: Hashable {
         case text(String)
-        case icon(Icon.Source)
+        /// With no text on screen, `label` is what VoiceOver reads.
+        case icon(Icon.Source, label: String? = nil)
         case textIcon(String, Icon.Source)
 
         @MainActor
-        public static func systemIcon(_ name: String) -> Style {
-            .icon(.system(name))
+        public static func systemIcon(_ name: String, label: String? = nil) -> Style {
+            .icon(.system(name), label: label)
         }
 
         @MainActor
         public static func textSystemIcon(_ text: String, _ name: String) -> Style {
             .textIcon(text, .system(name))
+        }
+
+        /// What VoiceOver reads, when there are words to read. An SF Symbol
+        /// without a label describes itself on screen but has no words here.
+        var spokenText: String? {
+            switch self {
+            case .text(let text), .textIcon(let text, _):  text
+            case .icon(let source, let label):             label ?? source.accessibilityLabel
+            }
         }
     }
 
@@ -43,12 +53,12 @@ public struct Label: View {
         self.init(style: .text(text), size: typography, emphasis: emphasis, lineLimit: lineLimit)
     }
 
-    public init(icon: Icon.Source, size typography: Typography = .body) {
-        self.init(style: .icon(icon), size: typography)
+    public init(icon: Icon.Source, label: String? = nil, size typography: Typography = .body) {
+        self.init(style: .icon(icon, label: label), size: typography)
     }
 
-    public init(systemIcon: String, size typography: Typography = .body) {
-        self.init(style: .systemIcon(systemIcon), size: typography)
+    public init(systemIcon: String, label: String? = nil, size typography: Typography = .body) {
+        self.init(style: .systemIcon(systemIcon, label: label), size: typography)
     }
 
     public init(text: String, systemIcon: String, size typography: Typography = .body, emphasis: Typography.Emphasis? = nil, lineLimit: Int? = 1) {
@@ -64,10 +74,14 @@ public struct Label: View {
 
     public var body: some View {
         switch style {
-        case .text, .textIcon:
+        case .text(let text), .textIcon(let text, _):
             IconAndTitle(icon: labelIcon, title: labelText)
                 .typography(typography, emphasis: emphasis)
+                // One element that reads its words; the icon beside them is decoration.
+                .accessibilityElement(children: .combine)
+                .spoken(Spoken(text))
         case .icon:
+            // The icon speaks for itself.
             labelIcon
                 .typography(typography, emphasis: emphasis)
         }
@@ -104,8 +118,8 @@ public struct Label: View {
     @ViewBuilder
     private var labelIcon: some View {
         switch style {
-        case .icon(let icon):
-            Icon(source: icon)
+        case .icon(let icon, let label):
+            Icon(source: icon, label: label)
         case .textIcon(_, let icon):
             Icon(source: icon)
         case .text:                     EmptyView()
@@ -147,8 +161,8 @@ public struct Label: View {
 #Preview("Accessibility sizes") {
     VStack(alignment: .leading, spacing: 12) {
         Label(text: "One line by default, wrapped at accessibility sizes", systemIcon: "textformat.size")
-        Label(systemIcon: "trash")
-        Label(icon: .symbol(.wordmark))
+        Label(systemIcon: "trash", label: "Delete")
+        Label(icon: .symbol(.wordmark), label: "Familiar")
     }
     .frame(width: 343, alignment: .leading)
     .padding()
