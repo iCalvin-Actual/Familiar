@@ -8,6 +8,21 @@
 import SwiftUI
 import Familiar
 
+private struct ChipSelection: View {
+    @State private var selected: Set<String> = ["Tea"]
+    private let drinks = ["Coffee", "Tea", "Juice", "Smoothies", "Cocktails"]
+
+    var body: some View {
+        FlowLayout {
+            ForEach(drinks, id: \.self) { drink in
+                Chip(drink, isSelected: selected.contains(drink), behavior: .button {
+                    if selected.remove(drink) == nil { selected.insert(drink) }
+                })
+            }
+        }
+    }
+}
+
 extension Specimen {
     static let chip = Specimen(
         name: "Chip",
@@ -33,6 +48,7 @@ extension Specimen {
                         .disabled(true)
                 }
             },
+            Variant("Selection") { ChipSelection() },
             Variant("Sizes") {
                 VStack(alignment: .leading, spacing: 12) {
                     ForEach([Typography.xSmall, .small, .medium, .large], id: \.self) { size in
@@ -42,6 +58,14 @@ extension Specimen {
                             Chip("Badged", badge: "3", size: size)
                         }
                     }
+                }
+            },
+            Variant("Badges") {
+                FlowLayout {
+                    Chip("Plain")
+                    Chip("Badged", badge: "3")
+                    Chip("Wide badge", badge: "sold out")
+                    Chip("Selected", badge: "9", isSelected: true, behavior: .button {})
                 }
             },
             Variant("Accent swatches") {
