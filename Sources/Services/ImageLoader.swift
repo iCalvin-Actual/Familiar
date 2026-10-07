@@ -38,9 +38,60 @@ public struct PlainRequestBuilder: RequestBuilder {
     }
 }
 
-// icc-imageloader
+/// Fetches the images `Artwork` shows from `.remote` sources.
+public protocol ImageLoader: Sendable {
+    func image(for request: ImageRequest) async throws -> Image
+}
 
 public enum ImageLoadingError: Error, Equatable {
     case badStatus(Int)
     case undecodable
+}
+
+/// Loads over a `URLSession`, retrying the failures that tend to clear up
+/// on their own.
+public struct URLSessionImageLoader: ImageLoader {
+    public let session: URLSession
+    public let builder: any RequestBuilder
+    /// Tries after the first, for transient failures only.
+    public let retries: Int
+
+    public init(session: URLSession = .shared, builder: any RequestBuilder = PlainRequestBuilder(), retries: Int = 2) {
+        self.session = session
+        self.builder = builder
+        self.retries = retries
+    }
+
+    public func image(for request: ImageRequest) async throws -> Image {
+        let urlRequest = builder.urlRequest(for: request)
+        var attempt = 0
+        while true {
+            do {
+                return try await load(urlRequest)
+            } catch where attempt < retries && Self.isTransient(error) {
+                attempt += 1
+                // 0.5s, then 1s, …
+                try await Task.sleep(for: .milliseconds(250 << attempt))
+            }
+        }
+    }
+
+    private func load(_ request: URLRequest) async throws -> Image {
+        let (data, response) = try await session.data(for: request)
+        if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
+            throw ImageLoadingError.badStatus(http.statusCode)
+        }
+        guard let image = Image(data: data) else { throw ImageLoadingError.undecodable }
+        return image
+    }
+
+    /// Worth another try: the network blinked, or the server said "later".
+    /// A missing host or a 404 won't change by retrying.
+    static func isTransient(_ error: any Error) -> Bool {
+        if case ImageLoadingError.badStatus(let code) = error {
+            return code == 429 || code >= 500
+        }
+        guard let error = error as? URLError else { return false }
+        return [.timedOut, .networkConnectionLost, .notConnectedToInternet, .cannotConnectToHost].contains(error.code)
+    }
 }

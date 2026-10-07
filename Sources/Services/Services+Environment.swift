@@ -10,6 +10,7 @@ import SwiftUI
 extension EnvironmentValues {
     @Entry public var analytics: any Analytics = NoAnalytics()
     @Entry public var featureGate: any FeatureGate = StaticFeatureGate()
+    @Entry public var imageLoader: any ImageLoader = URLSessionImageLoader()
 }
 
 public extension View {
@@ -19,6 +20,10 @@ public extension View {
 
     func featureGate(_ gate: some FeatureGate) -> some View {
         environment(\.featureGate, gate)
+    }
+
+    func imageLoader(_ loader: some ImageLoader) -> some View {
+        environment(\.imageLoader, loader)
     }
 
     /// Shows this view only while `flag` is on.
