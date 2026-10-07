@@ -79,7 +79,7 @@ public struct Rating: View {
     }
 
     var spokenValue: String {
-        "\(formattedValue) out of \(maximum) stars"
+        String(localized: "\(formattedValue) out of \(maximum) stars", bundle: .familiar)
     }
 
     var stars: [Star] {

@@ -18,7 +18,7 @@ public struct Icon: View {
         /// needs one, so our own images are never silent.
         public var accessibilityLabel: String {
             switch self {
-            case .wordmark: "Wordmark"
+            case .wordmark: String(localized: "Wordmark", bundle: .familiar, comment: "VoiceOver label for the wordmark image.")
             }
         }
     }

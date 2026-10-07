@@ -181,8 +181,8 @@ public struct Artwork: View {
     static func accessibilityValue(for status: Status) -> String {
         switch status {
         case .loaded:       ""
-        case .loading:      "Loading"
-        case .unavailable:  "Unavailable"
+        case .loading:      String(localized: "Loading", bundle: .familiar)
+        case .unavailable:  String(localized: "Unavailable", bundle: .familiar)
         }
     }
 }
