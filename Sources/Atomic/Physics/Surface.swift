@@ -7,7 +7,22 @@
 
 import SwiftUI
 
-// icc-glass
+extension View {
+    /// Familiar's glass. `tint` of `nil` is native, uncolored glass.
+    ///
+    /// visionOS has no Liquid Glass; it gets its own glass material, with the tint laid over it.
+    @ViewBuilder
+    func familiarGlass<S: InsettableShape>(tint: Color? = nil, interactive: Bool = true, in shape: S) -> some View {
+        #if os(visionOS)
+        background {
+            shape.fill(tint ?? .clear)
+        }
+        .glassBackgroundEffect(in: shape)
+        #else
+        glassEffect(.regular.tint(tint).interactive(interactive), in: shape)
+        #endif
+    }
+}
 
 /// Something for glass to refract in previews.
 struct Backdrop: ViewModifier {
