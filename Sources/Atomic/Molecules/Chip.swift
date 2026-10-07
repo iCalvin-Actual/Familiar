@@ -104,6 +104,7 @@ public struct Chip: View {
         }
         .modifier(Style(isSelected: isSelected, size: typography, isInteractive: behavior.isInteractive))
         .spoken(spoken)
+        .sensoryFeedback(.selection, trigger: isSelected) { _, _ in behavior.isInteractive }
     }
 
     private var content: some View {
@@ -207,6 +208,7 @@ private struct Chrome<Content: View>: View {
             .opacity(isEnabled ? 1 : 0.4)
             .minimumTapTarget(isInteractive)
             .ownsInteraction($isHovering)
+            .accessibilityShowsLargeContentViewer()
             .animation(.snappy(duration: 0.15), value: state.isHovered)
     }
 }

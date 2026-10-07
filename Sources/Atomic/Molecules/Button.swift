@@ -187,6 +187,7 @@ private struct Chrome: View {
         // space it's offered and centre a wider label inside it.
         .fixedSize(horizontal: width == .intrinsic, vertical: false)
         .ownsInteraction($isHovering)
+        .accessibilityShowsLargeContentViewer()
         // SwiftUI.Button supplies the trait and dims itself; this reports them.
         .spokenCombined(adding: isEnabled ? .button : [.button, .dimmed], keepingTraits: false)
         .animation(.snappy(duration: 0.15), value: isPressed)
