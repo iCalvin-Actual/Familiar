@@ -6,6 +6,8 @@ import SwiftUI
         WindowGroup {
             ContentView()
                 .analytics(ConsoleAnalytics())
+                // Remote artwork comes from a table, not the network.
+                .imageLoader(MockImageLoader.catalog)
         }
     }
 }

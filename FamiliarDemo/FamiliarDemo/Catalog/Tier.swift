@@ -16,7 +16,7 @@ enum Tier: String, CaseIterable, Identifiable {
 
     var specimens: [Specimen] {
         switch self {
-        case .atoms:        [.icon, .label, .loadingIndicator]
+        case .atoms:        [.icon, .label, .artwork, .loadingIndicator]
         case .molecules:    [.button, .chip]
         case .organisms:    []
         }

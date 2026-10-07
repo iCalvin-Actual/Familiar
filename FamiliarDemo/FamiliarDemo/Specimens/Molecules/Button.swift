@@ -114,6 +114,7 @@ extension Specimen {
     NavigationStack {
         PreviewView(specimen: .button)
     }
+    .imageLoader(MockImageLoader.catalog)
 }
 
 /// A narrow box with its edge drawn, so what a button does when it runs out
