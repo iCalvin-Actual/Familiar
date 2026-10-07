@@ -181,6 +181,7 @@ private struct Chrome: View {
         // Plain has no padding of its own, so its ring needs more room.
         .focusRing(shape, isFocused: state.isFocused && isEnabled, swatch: swatch, gap: prominence == .plain ? pointSize * 0.4 : 3)
         .opacity(Button.Style.opacity(isEnabled: isEnabled, isPressed: isPressed, isHovered: isHovered && prominence == .plain))
+        // icc-press-effect
         .scaleEffect(isPressed ? 0.97 : 1)
         .minimumTapTarget()
         // Outside the tap-target frame, which would otherwise take only the
