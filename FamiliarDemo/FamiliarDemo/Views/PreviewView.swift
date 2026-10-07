@@ -56,7 +56,7 @@ struct PreviewView: View {
                     }
                     Toggle("Accessibility XL", isOn: $isAccessibilitySize)
                 } label: {
-                    Label("Options", systemImage: "slider.horizontal.3")
+                    SwiftUI.Label("Options", systemImage: "slider.horizontal.3")
                 }
             }
         }

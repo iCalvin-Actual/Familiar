@@ -63,3 +63,17 @@ private struct TracksAppearance: ViewModifier {
         content.onAppear { analytics.track(event) }
     }
 }
+
+// MARK: - Previews
+
+#Preview("Gated") {
+    VStack(alignment: .leading, spacing: 12) {
+        Label(text: "Always shown")
+        Label(text: "Behind new-badge", systemIcon: "sparkle")
+            .gated(by: "new-badge")
+        Label(text: "Behind unshipped", systemIcon: "lock")
+            .gated(by: "unshipped")
+    }
+    .padding(24)
+    .featureGate(StaticFeatureGate(enabled: ["new-badge"]))
+}
