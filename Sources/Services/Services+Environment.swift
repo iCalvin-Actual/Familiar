@@ -11,6 +11,8 @@ extension EnvironmentValues {
     @Entry public var analytics: any Analytics = NoAnalytics()
     @Entry public var featureGate: any FeatureGate = StaticFeatureGate()
     @Entry public var imageLoader: any ImageLoader = URLSessionImageLoader()
+    /// Set by `tracksTaps(_:)`; Button and Chip track it when tapped.
+    @Entry var tapEvent: AnalyticsEvent? = nil
 }
 
 public extension View {
@@ -34,6 +36,11 @@ public extension View {
     /// Tracks `event` each time this view appears.
     func tracksAppearance(_ event: AnalyticsEvent) -> some View {
         modifier(TracksAppearance(event: event))
+    }
+
+    /// Tracks `event` each time a Button or Chip inside this view is tapped.
+    func tracksTaps(_ event: AnalyticsEvent) -> some View {
+        environment(\.tapEvent, event)
     }
 }
 
