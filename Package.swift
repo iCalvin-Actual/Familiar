@@ -19,7 +19,11 @@ let package = Package(
     targets: [
         .target(
             name: "Familiar",
-            // icc-resources
+            resources: [
+                // Declaring resources is what creates `Bundle.module`.
+                // Colors.xcassets. See `Swatch.catalog`.
+                .process("Resources/Colors"),
+            ],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
             ]

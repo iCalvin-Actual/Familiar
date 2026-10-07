@@ -87,4 +87,18 @@ public extension BrandColor {
     ]
 }
 
-// icc-swatch
+/// The brand colours as named swatches. Declare one here for each
+/// `BrandColor` above.
+public extension Swatch {
+    static let accent    = Swatch.brand(.accent)
+    static let ink       = Swatch.brand(.ink)
+    static let canvas    = Swatch.brand(.canvas)
+    static let muted     = Swatch.brand(.muted)
+    static let positive  = Swatch.brand(.positive)
+    static let caution   = Swatch.brand(.caution)
+    static let critical  = Swatch.brand(.critical)
+    static let signature = Swatch.brand(.signature)
+
+    /// Every brand swatch, in `BrandColor.all` order.
+    static let brandColors: [Swatch] = BrandColor.all.map(Swatch.brand)
+}
