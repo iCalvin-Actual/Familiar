@@ -86,3 +86,5 @@ public extension BrandColor {
         .accent, .ink, .canvas, .muted, .positive, .caution, .critical, .signature,
     ]
 }
+
+// icc-swatch

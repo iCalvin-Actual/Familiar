@@ -19,6 +19,7 @@ let package = Package(
     targets: [
         .target(
             name: "Familiar",
+            // icc-resources
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
             ]
