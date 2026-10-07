@@ -1,0 +1,74 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ out of %lld stars": {
+      "comment": "VoiceOver label for Rating, e.g. “4.9 out of 5 stars”.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ de %2$lld estrellas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ von %2$lld Sternen"
+          }
+        }
+      }
+    },
+    "Loading": {
+      "comment": "VoiceOver value for Artwork while its image downloads.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird geladen"
+          }
+        }
+      }
+    },
+    "Unavailable": {
+      "comment": "VoiceOver value for Artwork when its image fails to load.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No disponible"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht verfügbar"
+          }
+        }
+      }
+    },
+    "Wordmark": {
+      "comment": "VoiceOver label for the wordmark image.",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Logotipo"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wortmarke"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

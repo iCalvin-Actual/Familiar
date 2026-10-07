@@ -18,6 +18,7 @@ private struct ChipSelection: View {
                 Chip(drink, isSelected: selected.contains(drink), behavior: .button {
                     if selected.remove(drink) == nil { selected.insert(drink) }
                 })
+                // icc-spoken
             }
         }
     }

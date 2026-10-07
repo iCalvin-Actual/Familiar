@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Familiar",
+    // icc-localization
     platforms: [
         .iOS(.v26),
         .macOS(.v26),
@@ -28,6 +29,7 @@ let package = Package(
                 .process("Resources/Images"),
                 // Colors.xcassets. See `Swatch.catalog`.
                 .process("Resources/Colors"),
+                // icc-localization-resources
             ],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),

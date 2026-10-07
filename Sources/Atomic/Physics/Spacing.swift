@@ -17,4 +17,6 @@ public enum Spacing {
     public static let large: CGFloat = 16
     public static let xLarge: CGFloat = 24
 
+    /// The smallest a control's hit area may be, in either direction.
+    public static let minimumTapTarget: CGFloat = 44
 }

@@ -78,6 +78,8 @@ public struct Rating: View {
         format(value)
     }
 
+    // icc-spokenvalue
+
     var stars: [Star] {
         Self.stars(for: value, outOf: maximum)
     }
