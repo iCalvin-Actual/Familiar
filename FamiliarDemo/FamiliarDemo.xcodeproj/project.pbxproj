@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E40146C306C78B50095A6B3 /* Familiar in Frameworks */ = {isa = PBXBuildFile; productRef = 3E40146B306C78B50095A6B3 /* Familiar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		000000000000000130000000 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				3E40146C306C78B50095A6B3 /* Familiar in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 			);
 			name = FamiliarDemo;
 			packageProductDependencies = (
+				3E40146B306C78B50095A6B3 /* Familiar */,
 			);
 			productName = MyApp;
 			productReference = 000000000000000000000120 /* FamiliarDemo.app */;
@@ -93,6 +96,9 @@
 			);
 			mainGroup = 000000000000000000000001;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3E40146A306C78B50095A6B3 /* XCLocalSwiftPackageReference ".." */,
+			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 000000000000000000000020 /* Products */;
 			projectDirPath = "";
@@ -355,6 +361,19 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		3E40146A306C78B50095A6B3 /* XCLocalSwiftPackageReference ".." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ..;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3E40146B306C78B50095A6B3 /* Familiar */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Familiar;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 000000000000000000000000 /* Project object */;
 }
